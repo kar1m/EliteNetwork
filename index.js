@@ -1,9 +1,26 @@
+var User = require('./user.js');
+
 // Setup basic express server
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
+
+var mongoose = require('mongoose');
+function connection() {
+	console.log("tente connection");
+	mongoose.connect('mongodb://localhost/test');
+
+	var db = mongoose.connection;
+	db.on('error', console.error.bind(console, 'connection error:'));
+	db.once('open', function (callback) {
+	  
+		console.log("connecte");
+		  
+	});
+}
+connection();
 
 server.listen(port, function () {
   console.log('Server listening at port %d', port);
@@ -36,6 +53,11 @@ io.on('connection', function (socket) {
     socket.username = username;
     // add the client's username to the global list
     usernames[username] = username;
+	// Save user
+	console.log("on veut save " + username);
+	var user = new User({ name: username });
+	user.save();
+	
     ++numUsers;
     addedUser = true;
     socket.emit('login', {
