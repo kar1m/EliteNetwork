@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  .container
+    h1 Register Page
+    p.lead Say something worthwhile here.
+    br
+    form(role='form', action="/register",method="post", style='max-width: 300px;')
+      .form-group
+          input.form-control(type='text', name="username", placeholder='Enter Username')
+      .form-group
+        input.form-control(type='password', name="password", placeholder='Password')
+      #payment.form
+        h3.title Give me all your money!
+        script.stripe-button(src='https://checkout.stripe.com/checkout.js', data-key='pk_test_EgNrcGFU7dVJagEIpvimr4x2', data-image='/img/euros.jpg', data-name='Elite Network', data-description='Monthly abonnment to Elite Network', data-currency='eur', data-amount='100000', data-locale='auto')

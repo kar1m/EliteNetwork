@@ -17,7 +17,7 @@ $(function() {
   var $chatPage = $('.chat.page'); // The chatroom page
 
   // Prompt for setting a username
-  var username;
+  var username = getCookie("user");
   var connected = false;
   var typing = false;
   var lastTypingTime;
@@ -35,21 +35,16 @@ $(function() {
     log(message);
   }
 
+
   // Sets the client's username
-  function setUsername () {
-    username = cleanInput($usernameInput.val().trim());
-
-    // If the username is valid
-    if (username) {
-      $loginPage.fadeOut();
-      $chatPage.show();
-      $loginPage.off('click');
-      $currentInput = $inputMessage.focus();
-
-      // Tell the server your username
-      socket.emit('add user', username);
-    }
+  function setUsername() {
+    $currentInput = $inputMessage.focus();
+    // Tell the server your username
+    socket.emit('add user', getCookie("user"));
   }
+
+  //init
+  setUsername();
 
   // Sends a chat message
   function sendMessage () {
@@ -60,7 +55,7 @@ $(function() {
     if (message && connected) {
       $inputMessage.val('');
       addChatMessage({
-        username: username,
+        username: getCookie("user"),
         message: message
       });
       // tell server to execute 'new message' and send along one parameter
@@ -229,7 +224,7 @@ $(function() {
   socket.on('login', function (data) {
     connected = true;
     // Display the welcome message
-    var message = "Welcome to Socket.IO Chat – ";
+    var message = "Welcome to EliteNetwork";
     log(message, {
       prepend: true
     });
@@ -263,4 +258,15 @@ $(function() {
   socket.on('stop typing', function (data) {
     removeChatTyping(data);
   });
+
+  function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+    }
+    return "";
+  }
 });
