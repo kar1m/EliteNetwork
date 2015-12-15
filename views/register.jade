@@ -3,7 +3,7 @@ extends layout
 block content
   .container
     h1 Register Page
-    p.lead Say something worthwhile here.
+    p.lead Want to register? Piece of cake! All you need is a username, a password, and a lot of money!
     br
     form(role='form', action="/register",method="post", style='max-width: 300px;')
       .form-group
@@ -11,5 +11,5 @@ block content
       .form-group
         input.form-control(type='password', name="password", placeholder='Password')
       #payment.form
-        h3.title Give me all your money!
+        h3.title Ready to pay?
         script.stripe-button(src='https://checkout.stripe.com/checkout.js', data-key='pk_test_EgNrcGFU7dVJagEIpvimr4x2', data-image='/img/euros.jpg', data-name='Elite Network', data-description='Monthly abonnment to Elite Network', data-currency='eur', data-amount='100000', data-locale='auto')
