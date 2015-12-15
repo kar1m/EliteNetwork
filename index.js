@@ -4,10 +4,26 @@ var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 3000;
+var mongoose = require('mongoose');
+var User = require('./models/user.js');
 
 server.listen(port, function () {
   console.log('Server listening at port %d', port);
 });
+
+function connection() {
+  console.log("tente connection");
+  mongoose.connect('mongodb://elitenetwork:rXAwTG28hPjuMu95@ds027495.mongolab.com:27495/elitenetwork');
+
+  var db = mongoose.connection;
+  db.on('error', console.error.bind(console, 'connection error:'));
+  db.once('open', function (callback) {
+    
+    console.log("connecte");
+      
+  });
+}
+connection();
 
 // Routing
 app.use(express.static(__dirname + '/public'));
@@ -41,6 +57,12 @@ io.on('connection', function (socket) {
     socket.emit('login', {
       numUsers: numUsers
     });
+
+    // Save user
+    console.log("on veut save " + username);
+    var user = new User({ name: username });
+    user.save();
+
     // echo globally (all clients) that a person has connected
     socket.broadcast.emit('user joined', {
       username: socket.username,
