@@ -1,10 +1,13 @@
 extends layout
 
 block content
-  if (!user)
-    a(href="/login") Login
-    br
-    a(href="/register") Register
-  if (user)
-    p You are currently logged in as #{user.username}
-    a(href="/logout") Logout
+  .container
+    h1 Welcome to Elite Network!
+    p.lead Are you rich? Are you tired of all these peasants that are not worthy of your company? Then Elite Network is definitely what you need! This social network, thanks to its dissuasive registering fees, will keep you away from proletarians. Every users you will chat with are as rich as you! Isn't that wonderful? You can also compete with the other rich people to see who has the biggest amount of money. Have fun!
+    if (!user)
+      a(href="/login") Login
+      br
+      a(href="/register") Register
+    if (user)
+      p You are currently logged in as #{user.username}
+      a(href="/logout") Logout
